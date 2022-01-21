@@ -1,8 +1,8 @@
-const Consumer = require("./Consumer.js");
+const Consumer = require('./Consumer.js');
 
-const consumer = new Consumer("./queue", "node-test", "individuals-flow");
+const consumer = new Consumer('./queue', 'node-test', 'individuals-flow');
 
-console.time("test");
+console.time('test');
 
 while (true) {
   const batchId = consumer.getBatchId();
@@ -12,7 +12,7 @@ while (true) {
   console.log(batchSize);
 
   if (!batchSize) {
-    console.timeEnd("test");
+    console.timeEnd('test');
     return;
   }
 
