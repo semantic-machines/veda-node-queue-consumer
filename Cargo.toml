@@ -1,0 +1,22 @@
+[package]
+name = "n-vqueue"
+version = "0.1.0"
+license = "ISC"
+edition = "2018"
+exclude = ["index.node"]
+
+[lib]
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rust_decimal = "1.7.0"
+v_queue = "=0.1.10"
+v_common = { package = "v-common", version = "0.1.97" }
+
+[dependencies.neon]
+version = "0.9"
+default-features = false
+features = ["napi-6"]
