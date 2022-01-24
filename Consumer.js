@@ -15,6 +15,10 @@ class Consumer {
     return consumerGetBatchSize(this.consumer);
   }
 
+  getInfoOfPart(partId) {
+    return consumerGetInfoOfPart(this.consumer, partId);
+  }
+
   pop () {
     return consumerPopElement(this.consumer);
   }

@@ -22,4 +22,6 @@ while (true) {
     //consumer.next(i === batchSize - 1);
     consumer.next(true);
   }
+
+  consumer.getInfoOfPart(batchId);
 }
