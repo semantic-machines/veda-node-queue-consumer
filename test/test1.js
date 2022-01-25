@@ -1,5 +1,6 @@
-const Consumer = require('./Consumer.js');
-const consumer = new Consumer('./queue', 'node-test', 'individuals-flow');
+const assert = require('assert');
+const Consumer = require('../Consumer.js');
+const consumer = new Consumer('./test/queue', 'test1', 'test');
 
 console.time('test1');
 
@@ -34,5 +35,6 @@ while (true) {
   }
 }
 
-console.log(total);
-console.timeEnd('test');
+assert(total === 39);
+console.log('Total elements processed:', total);
+console.timeEnd('test1');
