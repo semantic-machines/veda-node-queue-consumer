@@ -7,37 +7,38 @@ class Consumer {
     this.consumer = consumerNew(path, name, queue);
   }
 
-  getPartId () {
+  getPart () {
     return consumerGetPartId(this.consumer);
   }
 
-  getQueuePartId () {
-    return consumerGetQueuePartId(this.consumer);
+  refreshPart(part) {
+    return consumerRefreshInfoOfPart(this.consumer, part);
   }
 
-  getBatchSize () {
+  getRestSize () {
     return consumerGetBatchSize(this.consumer);
   }
 
-  refreshInfoOfPart(partId) {
-    return consumerRefreshInfoOfPart(this.consumer, partId);
+  refreshQueue () {
+    return consumerRefreshInfoQueue(this.consumer);
   }
 
-  queueOpenPart(partId) {
-    return consumerQueueOpenPart(this.consumer, partId);
+  getMaxPart () {
+    return consumerGetQueuePartId(this.consumer);
+  }
+
+  queueOpenPart(part) {
+    return consumerQueueOpenPart(this.consumer, part);
   }
 
   pop () {
     return consumerPopElement(this.consumer);
   }
 
-  next (commit) {
-    return consumerNext(this.consumer, commit);
+  commit (toWrite) {
+    return consumerNext(this.consumer, toWrite);
   }
 
-  refreshInfoQueue () {
-    return consumerRefreshInfoQueue(this.consumer);
-  }
 }
 
 module.exports = Consumer;
