@@ -9,7 +9,7 @@
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
     "test": "cargo test",
-    "test-js": "npm run test-clean && node ./test/test2.js",
+    "test-js": "npm run test-clean && node ./test/test1.js && npm run test-clean && node ./test/test2.js",
     "test-clean": "rm -rf ./test/queue/test_info_pop*"
   },
   "author": "",
