@@ -41,7 +41,7 @@ pub fn individual2obj<'a>(cx: &mut FunctionContext<'a>, src: &mut Individual) ->
 
                     let t = cx.string("Decimal");
                     v8_value.set(cx, "type", t)?;
-                }
+                },
                 Value::Int(i) => {
                     let i_val = *i;
 
@@ -50,21 +50,21 @@ pub fn individual2obj<'a>(cx: &mut FunctionContext<'a>, src: &mut Individual) ->
 
                     let t = cx.string("Integer");
                     v8_value.set(cx, "type", t)?;
-                }
+                },
                 Value::Datetime(i) => {
                     let dt = *i;
                     let v = JsDate::new_lossy(cx, (dt * 1000) as f64);
                     v8_value.set(cx, "data", v)?;
                     let t = cx.string("Datetime");
                     v8_value.set(cx, "type", t)?;
-                }
+                },
                 Value::Bool(b) => {
                     let v = cx.boolean(*b);
                     v8_value.set(cx, "data", v)?;
 
                     let t = cx.string("Boolean");
                     v8_value.set(cx, "type", t)?;
-                }
+                },
                 Value::Str(s, l) => {
                     if *l != Lang::NONE {
                         let l = cx.string(&l.to_string().to_uppercase());
@@ -75,15 +75,15 @@ pub fn individual2obj<'a>(cx: &mut FunctionContext<'a>, src: &mut Individual) ->
 
                     let t = cx.string("String");
                     v8_value.set(cx, "type", t)?;
-                }
+                },
                 Value::Uri(s) => {
                     let v = cx.string(s);
                     v8_value.set(cx, "data", v)?;
 
                     let t = cx.string("Uri");
                     v8_value.set(cx, "type", t)?;
-                }
-                _ => {}
+                },
+                _ => {},
             }
         }
 

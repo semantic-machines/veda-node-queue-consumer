@@ -1,22 +1,30 @@
 "use strict";
 
-const { consumerNew, consumerGetId, consumerGetInfoOfPart, consumerGetBatchSize, consumerPopElement, consumerNext } = require("./index.node");
+const { consumerQueueOpenPart, consumerNew, consumerGetPartId, consumerGetQueuePartId, consumerRefreshInfoOfPart, consumerRefreshInfoQueue, consumerGetBatchSize, consumerPopElement, consumerNext } = require("./index.node");
 
 class Consumer {
   constructor (path, name, queue) {
     this.consumer = consumerNew(path, name, queue);
   }
 
-  getBatchId () {
-    return consumerGetId(this.consumer);
+  getPartId () {
+    return consumerGetPartId(this.consumer);
+  }
+
+  getQueuePartId () {
+    return consumerGetQueuePartId(this.consumer);
   }
 
   getBatchSize () {
     return consumerGetBatchSize(this.consumer);
   }
 
-  getInfoOfPart(partId) {
-    return consumerGetInfoOfPart(this.consumer, partId);
+  refreshInfoOfPart(partId) {
+    return consumerRefreshInfoOfPart(this.consumer, partId);
+  }
+
+  queueOpenPart(partId) {
+    return consumerQueueOpenPart(this.consumer, partId);
   }
 
   pop () {
@@ -25,6 +33,10 @@ class Consumer {
 
   next (commit) {
     return consumerNext(this.consumer, commit);
+  }
+
+  refreshInfoQueue () {
+    return consumerRefreshInfoQueue(this.consumer);
   }
 }
 

@@ -30,8 +30,20 @@ impl Consumer {
         self.queue_consumer.id
     }
 
+    fn get_queue_id(&self) -> u32 {
+        self.queue_consumer.queue.id
+    }
+
     fn get_info_of_part(&mut self, part_id: u32) -> Result<(), ErrorQueue> {
         self.queue_consumer.queue.get_info_of_part(part_id, true)
+    }
+
+    fn open_part(&mut self, part_id: u32) -> Result<(), ErrorQueue> {
+        self.queue_consumer.queue.open_part(part_id)
+    }
+
+    fn get_info_queue(&mut self) -> bool {
+        self.queue_consumer.queue.get_info_queue()
     }
 
     fn get_batch_size(&mut self) -> u32 {
@@ -94,6 +106,13 @@ pub fn ref_consumer_get_id(mut cx: FunctionContext) -> JsResult<JsNumber> {
     Ok(id)
 }
 
+pub fn ref_consumer_get_queue_id(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    let consumer = cx.argument::<JsBox<RefCell<Consumer>>>(0)?;
+    let id = cx.number(consumer.borrow().get_queue_id());
+
+    Ok(id)
+}
+
 pub fn ref_get_info_of_part(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let consumer = cx.argument::<JsBox<RefCell<Consumer>>>(0)?;
     let part_id = cx.argument::<JsNumber>(1)?.value(&mut cx);
@@ -101,6 +120,29 @@ pub fn ref_get_info_of_part(mut cx: FunctionContext) -> JsResult<JsUndefined> {
 
     if let Err(_e) = borrow_mut.get_info_of_part(part_id as u32) {
         return cx.throw_error("E3");
+    }
+
+    Ok(cx.undefined())
+}
+
+pub fn ref_queue_open_part(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+    let consumer = cx.argument::<JsBox<RefCell<Consumer>>>(0)?;
+    let part_id = cx.argument::<JsNumber>(1)?.value(&mut cx);
+    let mut borrow_mut = consumer.borrow_mut();
+
+    if let Err(_e) = borrow_mut.open_part(part_id as u32) {
+        return cx.throw_error("E4");
+    }
+
+    Ok(cx.undefined())
+}
+
+pub fn ref_get_info_queue(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+    let consumer = cx.argument::<JsBox<RefCell<Consumer>>>(0)?;
+    let mut borrow_mut = consumer.borrow_mut();
+
+    if !borrow_mut.get_info_queue() {
+        return cx.throw_error("E5");
     }
 
     Ok(cx.undefined())
@@ -137,16 +179,16 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
         match e {
             ErrorQueue::FailReadTailMessage => {
                 return Ok(cx.empty_object());
-            }
+            },
             ErrorQueue::InvalidChecksum => {
                 //error!("[module] consumer:pop_body: invalid CRC, attempt seek next record");
                 borrow_mut.queue_consumer.seek_next_pos();
                 return Ok(cx.empty_object());
-            }
+            },
             _ => {
                 //error!("{} get msg from queue: {}", self.queue_prepared_count, e.as_str());
                 return Ok(cx.empty_object());
-            }
+            },
         }
     }
 
@@ -191,8 +233,11 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("consumerNew", ref_consumer_new)?;
-    cx.export_function("consumerGetId", ref_consumer_get_id)?;
-    cx.export_function("consumerGetInfoOfPart", ref_get_info_of_part)?;
+    cx.export_function("consumerGetPartId", ref_consumer_get_id)?;
+    cx.export_function("consumerGetQueuePartId", ref_consumer_get_queue_id)?;
+    cx.export_function("consumerRefreshInfoOfPart", ref_get_info_of_part)?;
+    cx.export_function("consumerRefreshInfoQueue", ref_get_info_queue)?;
+    cx.export_function("consumerQueueOpenPart", ref_queue_open_part)?;
     cx.export_function("consumerGetBatchSize", ref_get_batch_size)?;
     cx.export_function("consumerPopElement", ref_pop_element)?;
     cx.export_function("consumerNext", ref_next)?;
