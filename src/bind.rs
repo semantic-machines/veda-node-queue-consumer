@@ -66,11 +66,7 @@ impl Consumer {
         self.queue_consumer.seek_next_pos()
     }
 
-    fn next(&mut self, commit: bool) -> bool {
-        self.queue_consumer.next(commit)
-    }
-
-    fn commit(&mut self) {
+    fn commit(&mut self) -> bool {
         self.queue_consumer.commit()
     }
 }
@@ -156,11 +152,10 @@ pub fn ref_get_batch_size(mut cx: FunctionContext) -> JsResult<JsNumber> {
     Ok(cx.number(size))
 }
 
-pub fn ref_next(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+pub fn ref_commit(mut cx: FunctionContext) -> JsResult<JsBoolean> {
     let consumer = cx.argument::<JsBox<RefCell<Consumer>>>(0)?;
-    let need_commit = cx.argument::<JsBoolean>(1)?.value(&mut cx);
     let mut borrow_mut = consumer.borrow_mut();
-    let res = borrow_mut.next(need_commit);
+    let res = borrow_mut.commit();
 
     Ok(cx.boolean(res))
 }
@@ -240,7 +235,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("consumerQueueOpenPart", ref_queue_open_part)?;
     cx.export_function("consumerGetBatchSize", ref_get_batch_size)?;
     cx.export_function("consumerPopElement", ref_pop_element)?;
-    cx.export_function("consumerNext", ref_next)?;
+    cx.export_function("consumerCommit", ref_commit)?;
 
     Ok(())
 }

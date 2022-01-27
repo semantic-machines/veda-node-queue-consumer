@@ -27,7 +27,10 @@ while (true) {
     if (i === 0 || i === restSize - 1) {
       console.log(el);
     }
-    consumer.commit(i === restSize - 1);
+
+    if (i === restSize - 1) {
+      consumer.commit();
+    }
   }
 
   if (part >= maxPart) {

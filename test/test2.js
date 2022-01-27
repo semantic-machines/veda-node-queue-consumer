@@ -9,11 +9,11 @@ let i = 0;
 while (true) {
   let el = myConsumer.pop();
   if (!el.cmd) {
-    myConsumer.commit(true);
+    myConsumer.commit();
     break;
   }
   if (i % 10 === 0) {
-    myConsumer.commit(true);
+    myConsumer.commit();
   }
   i++;
 }

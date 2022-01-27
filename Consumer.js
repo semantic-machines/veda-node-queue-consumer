@@ -9,7 +9,7 @@ const {
   consumerRefreshInfoQueue,
   consumerGetBatchSize,
   consumerPopElement,
-  consumerNext,
+  consumerCommit,
 } = require("./index.node");
 
 class Consumer {
@@ -45,8 +45,8 @@ class Consumer {
     return consumerPopElement(this.consumer);
   }
 
-  commit (toWrite) {
-    return consumerNext(this.consumer, toWrite);
+  commit () {
+    return consumerCommit(this.consumer);
   }
 }
 
