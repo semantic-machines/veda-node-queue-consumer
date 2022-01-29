@@ -1,6 +1,6 @@
 module.exports = {
   'env': {
-    'browser': true,
+    'node': true,
     'es2021': true,
   },
   'plugins': [
@@ -10,10 +10,7 @@ module.exports = {
     'google',
     'plugin:security-node/recommended',
   ],
-  'parserOptions': {
-    'ecmaVersion': 12,
-    'sourceType': 'module',
-  },
+  'parser': 'babel-eslint',
   'rules': {
     // Style
     'space-before-function-paren': ['error', 'always'],

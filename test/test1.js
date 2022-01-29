@@ -1,6 +1,6 @@
 const assert = require('assert');
-const Consumer = require('../Consumer.js');
-const myConsumer = new Consumer('./test/queue', 'test1', 'test');
+const QueueConsumer = require('../QueueConsumer.js');
+const myQueueConsumer = new QueueConsumer('./test/queue', 'test', 'test1');
 
 console.time('Test1');
 
@@ -10,17 +10,17 @@ let maxPart;
 let restSize;
 
 (function processQueue () {
-  myConsumer.refreshQueue();
-  maxPart = myConsumer.getMaxPart();
+  myQueueConsumer.refreshQueue();
+  maxPart = myQueueConsumer.getMaxPart();
 
-  myPart = myConsumer.getPart();
-  myConsumer.refreshPart(myPart);
-  myConsumer.setPart(myPart);
-  restSize = myConsumer.getRestSize();
+  myPart = myQueueConsumer.getPart();
+  myQueueConsumer.refreshPart(myPart);
+  myQueueConsumer.setPart(myPart);
+  restSize = myQueueConsumer.getRestSize();
 
   if (restSize === 0 ) {
     if (myPart < maxPart) {
-      myConsumer.setPart(++myPart);
+      myQueueConsumer.setPart(++myPart);
       return processQueue();
     } else {
       console.log('Queue end reached');
@@ -31,10 +31,10 @@ let restSize;
   console.log(`Queue max part: ${maxPart}, my part: ${myPart}, rest: ${restSize}`);
 
   for (let i = 0; i < restSize; i++) {
-    const el = myConsumer.pop();
+    const el = myQueueConsumer.pop();
     total++;
     if (i === 0 || i === restSize - 1) {
-      myConsumer.commit();
+      myQueueConsumer.commit();
     }
   }
   return processQueue();

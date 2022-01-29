@@ -1,6 +1,6 @@
 const assert = require('assert');
-const Consumer = require('../Consumer.js');
-const myConsumer = new Consumer('./test/queue', 'test3', 'test');
+const QueueConsumer = require('../QueueConsumer.js');
+const myQueueConsumer = new QueueConsumer('./test/queue', 'test', 'test3');
 
 const QUEUE_DELAY = 1000;
 let MAX_CALLS = 3;
@@ -15,10 +15,10 @@ let i = 0;
     return;
   }
 
-  const el = myConsumer.pop();
+  const el = myQueueConsumer.pop();
 
   if (!el.cmd) {
-    myConsumer.commit();
+    myQueueConsumer.commit();
     console.log(`Queue end reached, waiting for ${QUEUE_DELAY / 1000}s`);
     MAX_CALLS--;
     return setTimeout(processQueue, QUEUE_DELAY);

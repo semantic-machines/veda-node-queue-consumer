@@ -12,8 +12,8 @@ const {
   consumerCommit,
 } = require('./index.node');
 
-class Consumer {
-  constructor (path, name, queue) {
+class QueueConsumer {
+  constructor (path, queue, name) {
     this.consumer = consumerNew(path, name, queue);
   }
 
@@ -50,4 +50,4 @@ class Consumer {
   }
 }
 
-module.exports = Consumer;
+module.exports = QueueConsumer;
