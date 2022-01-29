@@ -9,21 +9,22 @@
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
     "test": "cargo test",
-    "test-js": "npm run test1 && npm run test2",
+    "test-js": "npm run test1 && npm run test2 && npm run test3",
     "test1": "npm run test-clean && node ./test/test1.js",
     "test2": "npm run test-clean && node ./test/test2.js",
+    "test3": "npm run test-clean && node ./test/test3.js",
     "test-clean": "rm -rf ./test/queue/test_info_pop*"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "cargo-cp-artifact": "^0.1",
-    "eslint": "^7.15.0",                                                                                                                                                                       
-    "eslint-config-google": "^0.14.0",                                                                                                                                                         
-    "eslint-config-standard": "^16.0.2",                                                                                                                                                       
-    "eslint-plugin-import": "^2.22.1",                                                                                                                                                         
-    "eslint-plugin-node": "^11.1.0",                                                                                                                                                           
-    "eslint-plugin-promise": "^4.2.1",                                                                                                                                                         
+    "eslint": "^7.15.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security-node": "^1.1.0"
   }
 }
