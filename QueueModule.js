@@ -1,10 +1,8 @@
 const QueueFeeder = require('./QueueFeeder.js');
 
 class QueueModule {
-  constructor ({path, queue, name, beforeStart, beforeExit, process}) {
-    this.path = path;
-    this.queue = queue;
-    this.name = name;
+  constructor ({options, beforeStart, beforeExit, process}) {
+    this.options = options;
 
     if (typeof beforeStart === 'function') {
       this.beforeStart = beforeStart;
@@ -20,11 +18,11 @@ class QueueModule {
   }
 
   beforeStart () {
-    console.log(`QueueModule: '${this.name}' has started`);
+    console.log(`QueueModule: '${this.options.name}' has started`);
   }
 
   beforeExit () {
-    console.log(`QueueModule: '${this.name}' will exit`);
+    console.log(`QueueModule: '${this.options.name}' will exit`);
   }
 
   process (el) {

@@ -1,0 +1,7 @@
+{
+  "path": "./test/queue",
+  "queue": "test",
+  "name": "test4",
+  "queueDelay": 1000,
+  "commitThreshold": 1000
+}
