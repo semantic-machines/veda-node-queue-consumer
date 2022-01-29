@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const {
   consumerQueueOpenPart,
@@ -10,7 +10,7 @@ const {
   consumerGetBatchSize,
   consumerPopElement,
   consumerCommit,
-} = require("./index.node");
+} = require('./index.node');
 
 class Consumer {
   constructor (path, name, queue) {
@@ -21,7 +21,7 @@ class Consumer {
     return consumerGetPartId(this.consumer);
   }
 
-  setPart(part) {
+  setPart (part) {
     return consumerQueueOpenPart(this.consumer, part);
   }
 
@@ -33,7 +33,7 @@ class Consumer {
     return consumerGetQueuePartId(this.consumer);
   }
 
-  refreshPart(part) {
+  refreshPart (part) {
     return consumerRefreshInfoOfPart(this.consumer, part);
   }
 

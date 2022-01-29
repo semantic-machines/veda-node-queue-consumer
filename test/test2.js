@@ -7,7 +7,7 @@ console.time('test2');
 let i = 0;
 
 while (true) {
-  let el = myConsumer.pop();
+  const el = myConsumer.pop();
   if (!el.cmd) {
     myConsumer.commit();
     break;
