@@ -1,6 +1,10 @@
 const assert = require('assert');
 const QueueConsumer = require('../QueueConsumer.js');
-const myQueueConsumer = new QueueConsumer('./test/queue', 'test', 'test2');
+const myQueueConsumer = new QueueConsumer({
+  path: './test/queue',
+  queue: 'test',
+  name: 'test2',
+});
 
 console.time('Test2');
 

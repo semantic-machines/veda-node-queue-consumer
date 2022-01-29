@@ -1,20 +1,27 @@
-const QueueFeeder = require('../QueueFeeder.js');
+const assert = require('assert');
+const process = require('process');
+const QueueModule = require('../QueueModule.js');
 
-const myModule = {
+const myModule = new QueueModule({
+  path: './test/queue',
+  queue: 'test',
   name: 'test4',
 
   beforeStart: function () {
-    console.log(`Module ${this.name} started`);
+    console.log(`Module ${this.name}: started`);
   },
 
-  beforeExit: function (code) {
-    console.log(`Module exiting with code ${code}`);
+  beforeExit: function () {
+    console.log(`Module ${this.name}: will exit`);
   },
 
   process: function (el) {
-    console.log(el);
+    console.log(`Module ${this.name}: queue element processed, cmd = ${el.cmd}, op_id = ${el.op_id}`);
   },
-};
+});
 
-const myQueueFeeder = new QueueFeeder('./test/queue', 'test', myModule);
-myQueueFeeder.run();
+myModule.run();
+
+setTimeout(() => {
+  process.kill(process.pid);
+}, 3000);

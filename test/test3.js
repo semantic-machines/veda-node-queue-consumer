@@ -1,6 +1,10 @@
 const assert = require('assert');
 const QueueConsumer = require('../QueueConsumer.js');
-const myQueueConsumer = new QueueConsumer('./test/queue', 'test', 'test3');
+const myQueueConsumer = new QueueConsumer({
+  path: './test/queue',
+  queue: 'test',
+  name: 'test3',
+});
 
 const QUEUE_DELAY = 1000;
 let MAX_CALLS = 3;

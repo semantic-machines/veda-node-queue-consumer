@@ -1,11 +1,11 @@
 const process = require('process');
 const QueueConsumer = require('./QueueConsumer.js');
 const QUEUE_DELAY = 1000;
-const COMMIT_THRESHOLD = 100;
+const COMMIT_THRESHOLD = 1000;
 
 class QueueFeeder {
-  constructor (path, queue, module) {
-    this.consumer = new QueueConsumer(path, queue, module.name);
+  constructor (module) {
+    this.consumer = new QueueConsumer(module);
     this.module = module;
     this.count = 0;
   }
@@ -13,15 +13,15 @@ class QueueFeeder {
   static exitSignal = 0;
 
   run () {
-    console.log(`QueueFeeder: starting module ${this.module.name}`);
+    console.log(`QueueFeeder: '${this.module.name}' will start`);
     this.module.beforeStart();
     this.processQueue();
   }
 
   exit () {
     this.consumer.commit();
-    this.module.beforeExit(QueueFeeder.exitSignal);
-    console.log(`QueueFeeder: exit module ${this.module.name}`);
+    this.module.beforeExit();
+    console.log(`QueueFeeder: '${this.module.name}' has exited`);
     process.exit(1);
   }
 
@@ -34,7 +34,7 @@ class QueueFeeder {
 
     if (!el.cmd) {
       this.consumer.commit();
-      console.log(`Queue end reached, waiting for ${QUEUE_DELAY / 1000}s`);
+      console.log(`QueueFeeder: queue end reached, waiting for ${QUEUE_DELAY / 1000}s`);
       return setTimeout(this.processQueue.bind(this), QUEUE_DELAY);
     }
 
@@ -46,7 +46,7 @@ class QueueFeeder {
         this.consumer.commit();
       }
     } catch (error) {
-      console.log(`Error: Module ${this.module.name} failed to process queue element ${el}, ${error}`);
+      console.error(`QueueFeeder: module ${this.module.name} failed to process queue element ${el}, ${error}`);
       process.exit(1);
     }
 
@@ -55,6 +55,7 @@ class QueueFeeder {
 }
 
 const handler = (signal) => {
+  console.log(`QueueFeeder: signal ${signal} received`);
   QueueFeeder.exitSignal = signal;
 };
 process.on('SIGINT', handler);

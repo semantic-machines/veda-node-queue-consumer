@@ -13,7 +13,7 @@ const {
 } = require('./index.node');
 
 class QueueConsumer {
-  constructor (path, queue, name) {
+  constructor ({path, queue, name}) {
     this.consumer = consumerNew(path, name, queue);
   }
 
