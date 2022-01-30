@@ -10,22 +10,35 @@ class QueueFeeder {
 
   static exitSignal = 0;
 
-  run () {
+  async run () {
     console.log(`QueueFeeder: '${this.module.options.name}' will start`);
-    this.module.beforeStart();
+
+    try {
+      await this.module.beforeStart();
+    } catch (error) {
+      console.error(`QueueFeeder: ${this.module.options.name} failed to start, ${error.stack}`);
+      process.exit(1);
+    }
+
     this.processQueue();
   }
 
-  exit () {
+  async exit () {
     this.consumer.commit();
-    this.module.beforeExit();
-    console.log(`QueueFeeder: '${this.module.options.name}' has exited`);
+
+    try {
+      await this.module.beforeExit();
+      console.log(`QueueFeeder: '${this.module.options.name}' has exited`);
+    } catch (error) {
+      console.log(`QueueFeeder: '${this.module.options.name}' failed to exit normally, ${error.stack}`);
+    }
+
     process.exit(1);
   }
 
-  processQueue () {
+  async processQueue () {
     if (QueueFeeder.exitSignal) {
-      this.exit();
+      return this.exit();
     }
 
     const el = this.consumer.pop();
@@ -39,12 +52,12 @@ class QueueFeeder {
     this.processed++;
 
     try {
-      this.module.process(el);
+      await this.module.process(el);
       if (this.processed % this.module.options.commitThreshold === 0) {
         this.consumer.commit();
       }
     } catch (error) {
-      console.error(`QueueFeeder: module ${this.module.options.name} failed to process queue element ${el}, ${error}`);
+      console.error(`QueueFeeder: ${this.module.options.name} failed to process queue element ${el}, ${error.stack}`);
       process.exit(1);
     }
 
@@ -52,11 +65,11 @@ class QueueFeeder {
   }
 }
 
-const handler = (signal) => {
+const exitHandler = (signal) => {
   console.log(`QueueFeeder: signal ${signal} received`);
   QueueFeeder.exitSignal = signal;
 };
-process.on('SIGINT', handler);
-process.on('SIGTERM', handler);
+process.on('SIGINT', exitHandler);
+process.on('SIGTERM', exitHandler);
 
 module.exports = QueueFeeder;

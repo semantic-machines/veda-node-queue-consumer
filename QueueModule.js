@@ -1,36 +1,36 @@
 const QueueFeeder = require('./QueueFeeder.js');
 
 class QueueModule {
-  constructor (module) {
-    this.module = module;
+  constructor ({options, beforeStart, beforeExit, process}) {
+    this.options = options;
 
-    if (typeof module.beforeStart === 'function') {
-      this.beforeStart = module.beforeStart;
+    if (typeof beforeStart === 'function') {
+      this.beforeStart = beforeStart;
     }
 
     if (typeof beforeExit === 'function') {
-      this.beforeExit = module.beforeExit;
+      this.beforeExit = beforeExit;
     }
 
     if (typeof process === 'function') {
-      this.process = module.process;
+      this.process = process;
     }
   }
 
-  beforeStart () {
-    console.log(`QueueModule: '${this.module.options.name}' has started`);
+  async beforeStart () {
+    console.log(`QueueModule: '${this.options.name}' has started`);
   }
 
-  beforeExit () {
-    console.log(`QueueModule: '${this.module.options.name}' will exit`);
+  async beforeExit () {
+    console.log(`QueueModule: '${this.options.name}' will exit`);
   }
 
-  process (el) {
+  async process (el) {
     console.log(`QueueModule: queue element processed, cmd = ${el.cmd}, op_id = ${el.op_id}`);
   }
 
   run () {
-    const myQueueFeeder = new QueueFeeder(this.module);
+    const myQueueFeeder = new QueueFeeder(this);
     myQueueFeeder.run();
   }
 };

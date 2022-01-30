@@ -17,22 +17,27 @@ try {
   };
 }
 
+const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+let counter = 0;
+
 const myModule = new QueueModule({
   options: OPTIONS,
 
-  counter: 0,
-
-  beforeStart: function () {
+  beforeStart: async function () {
+    await timeout(2000);
     console.log(`Module ${this.options.name}: started`);
   },
 
-  beforeExit: function () {
+  beforeExit: async function () {
+    await timeout(2000);
     console.log(`Module ${this.options.name}: will exit`);
-    assert(this.counter === 39);
+    assert(counter === 39);
   },
 
-  process: function (el) {
-    this.counter++;
+  process: async function (el) {
+    await timeout(100);
+    counter++;
   },
 });
 
@@ -40,4 +45,4 @@ myModule.run();
 
 setTimeout(() => {
   process.kill(process.pid);
-}, 3000);
+}, 10000);
