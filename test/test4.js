@@ -25,18 +25,18 @@ const myModule = new QueueModule({
   options: OPTIONS,
 
   beforeStart: async function () {
-    await timeout(2000);
+    await timeout(1000);
     console.log(`Module ${this.options.name}: started`);
   },
 
   beforeExit: async function () {
-    await timeout(2000);
     console.log(`Module ${this.options.name}: will exit`);
+    await timeout(1000);
     assert(counter === 39);
   },
 
   process: async function (el) {
-    await timeout(100);
+    await timeout(10);
     counter++;
   },
 });
@@ -45,4 +45,4 @@ myModule.run();
 
 setTimeout(() => {
   process.kill(process.pid);
-}, 10000);
+}, 3000);

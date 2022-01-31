@@ -6,9 +6,8 @@ class QueueFeeder {
     this.consumer = new QueueConsumer(module.options);
     this.module = module;
     this.processed = 0;
+    this.exitSignal = 0;
   }
-
-  static exitSignal = 0;
 
   async run () {
     console.log(`QueueFeeder: '${this.module.options.name}' will start`);
@@ -19,6 +18,13 @@ class QueueFeeder {
       console.error(`QueueFeeder: ${this.module.options.name} failed to start, ${error.stack}`);
       process.exit(1);
     }
+
+    const exitHandler = (signal) => {
+      console.log(`QueueFeeder: signal ${signal} received`);
+      this.exitSignal = signal;
+    };
+    process.on('SIGINT', exitHandler);
+    process.on('SIGTERM', exitHandler);
 
     this.processQueue();
   }
@@ -36,40 +42,42 @@ class QueueFeeder {
     process.exit(1);
   }
 
+  suspend () {
+    this.consumer.commit();
+    console.log(`QueueFeeder: queue end reached, suspend`);
+    setTimeout(this.resume.bind(this), this.module.options.queueDelay);
+  }
+
+  resume () {
+    console.log(`QueueFeeder: queue update received, resume`);
+    this.processQueue();
+  }
+
   async processQueue () {
-    if (QueueFeeder.exitSignal) {
-      return this.exit();
-    }
-
-    const el = this.consumer.pop();
-
-    if (!el.cmd) {
-      this.consumer.commit();
-      console.log(`QueueFeeder: queue end reached, waiting for ${this.module.options.queueDelay / 1000}s`);
-      return setTimeout(this.processQueue.bind(this), this.module.options.queueDelay);
-    }
-
-    this.processed++;
-
-    try {
-      await this.module.process(el);
-      if (this.processed % this.module.options.commitThreshold === 0) {
-        this.consumer.commit();
+    while (true) {
+      if (this.exitSignal) {
+        return this.exit();
       }
-    } catch (error) {
-      console.error(`QueueFeeder: ${this.module.options.name} failed to process queue element ${el}, ${error.stack}`);
-      process.exit(1);
-    }
 
-    return this.processQueue();
+      const el = this.consumer.pop();
+
+      if (!el.cmd) {
+        return this.suspend();
+      }
+
+      this.processed++;
+
+      try {
+        await this.module.process(el);
+        if (this.processed % this.module.options.commitThreshold === 0) {
+          this.consumer.commit();
+        }
+      } catch (error) {
+        console.error(`QueueFeeder: ${this.module.options.name} failed to process queue element ${el}, ${error.stack}`);
+        process.exit(1);
+      }
+    }
   }
 }
-
-const exitHandler = (signal) => {
-  console.log(`QueueFeeder: signal ${signal} received`);
-  QueueFeeder.exitSignal = signal;
-};
-process.on('SIGINT', exitHandler);
-process.on('SIGTERM', exitHandler);
 
 module.exports = QueueFeeder;
