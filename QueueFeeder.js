@@ -1,3 +1,4 @@
+const log = require('loglevel');
 const nano = require('nanomsg');
 const process = require('process');
 const QueueConsumer = require('./QueueConsumer.js');
@@ -8,22 +9,23 @@ class QueueFeeder {
     this.module = module;
     this.subscriber = nano.socket('sub');
     this.processed = 0;
+    this.timeout = 0;
     this.state = 'init';
   }
 
   async run () {
-    console.log(`QueueFeeder: '${this.module.options.name}' will start`);
+    log.warn(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' will start`);
 
     try {
       await this.module.beforeStart();
     } catch (error) {
-      console.error(`QueueFeeder: ${this.module.options.name} failed to start, ${error.stack}`);
+      log.error(new Date().toISOString(), `QueueFeeder: ${this.module.options.name} failed to start, ${error.stack}`);
       process.exit(1);
     }
 
     // Listen to OS signals
     const exitHandler = (signal) => {
-      console.log(`QueueFeeder: signal ${signal} received`);
+      log.warn(new Date().toISOString(), `QueueFeeder: signal ${signal} received`);
       if (this.state !== 'process') {
         this.exit();
       }
@@ -44,9 +46,9 @@ class QueueFeeder {
 
     try {
       await this.module.beforeExit();
-      console.log(`QueueFeeder: '${this.module.options.name}' has exited`);
+      log.warn(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' has exited`);
     } catch (error) {
-      console.log(`QueueFeeder: '${this.module.options.name}' failed to exit normally, ${error.stack}`);
+      log.error(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' failed to exit normally, ${error.stack}`);
     }
 
     process.exit(1);
@@ -55,13 +57,16 @@ class QueueFeeder {
   suspend () {
     this.state = 'suspend';
     this.consumer.commit();
-    console.log('QueueFeeder: queue end reached, suspend');
-    //setTimeout(this.resume.bind(this), this.module.options.queueDelay);
+    log.debug(new Date().toISOString(), 'QueueFeeder: queue end reached, suspend');
+    if (this.timeout) {
+      this.timeout = clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(this.resume.bind(this), this.module.options.queueDelay);
   }
 
   resume () {
     if (this.state !== 'process' && this.state !== 'exit') {
-      console.log('QueueFeeder: queue update received, resume');
+      log.debug(new Date().toISOString(), 'QueueFeeder: queue update received, resume');
       this.processQueue();
     }
   }
@@ -88,7 +93,7 @@ class QueueFeeder {
           this.consumer.commit();
         }
       } catch (error) {
-        console.error(`QueueFeeder: ${this.module.options.name} failed to process queue element ${el}, ${error.stack}`);
+        log.error(new Date().toISOString(), `QueueFeeder: ${this.module.options.name} failed to process queue element ${el}, ${error.stack}`);
         process.exit(1);
       }
     }

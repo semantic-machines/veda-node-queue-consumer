@@ -1,3 +1,4 @@
+const log = require('loglevel');
 const QueueFeeder = require('./QueueFeeder.js');
 
 class QueueModule {
@@ -18,15 +19,15 @@ class QueueModule {
   }
 
   async beforeStart () {
-    console.log(`QueueModule: '${this.options.name}' has started`);
+    log.warn(new Date().toISOString(), `QueueModule: '${this.options.name}' has started`);
   }
 
   async beforeExit () {
-    console.log(`QueueModule: '${this.options.name}' will exit`);
+    log.warn(new Date().toISOString(), `QueueModule: '${this.options.name}' will exit`);
   }
 
   async process (el) {
-    console.log(`QueueModule: queue element processed, cmd = ${el.cmd}, op_id = ${el.op_id}`);
+    log.warn(new Date().toISOString(), `QueueModule: queue element processed, cmd = ${el.cmd}, op_id = ${el.op_id}`);
   }
 
   run () {

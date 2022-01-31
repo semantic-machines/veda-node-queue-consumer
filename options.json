@@ -1,0 +1,10 @@
+{
+  "name": "Example",
+  "path": "./queue",
+  "queue": "individuals-flow",
+  "queueDelay": 60000,
+  "commitThreshold": 1000,
+  "notifyChannel": "tcp://127.0.0.1:8111",
+  "mainModule": "tcp://127.0.0.1:8112",
+  "logLevel": "warn"
+}
