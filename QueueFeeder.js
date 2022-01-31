@@ -1,3 +1,4 @@
+const nano = require('nanomsg');
 const process = require('process');
 const QueueConsumer = require('./QueueConsumer.js');
 
@@ -5,8 +6,9 @@ class QueueFeeder {
   constructor (module) {
     this.consumer = new QueueConsumer(module.options);
     this.module = module;
+    this.subscriber = nano.socket('sub');
     this.processed = 0;
-    this.exitSignal = 0;
+    this.state = 'init';
   }
 
   async run () {
@@ -19,12 +21,20 @@ class QueueFeeder {
       process.exit(1);
     }
 
+    // Listen to OS signals
     const exitHandler = (signal) => {
       console.log(`QueueFeeder: signal ${signal} received`);
-      this.exitSignal = signal;
+      if (this.state !== 'process') {
+        this.exit();
+      }
+      this.state = 'exit';
     };
     process.on('SIGINT', exitHandler);
     process.on('SIGTERM', exitHandler);
+
+    // Listen to queue update notifications
+    this.subscriber.connect(this.module.options.notifyChannel);
+    this.subscriber.on('data', () => this.resume());
 
     this.processQueue();
   }
@@ -43,21 +53,26 @@ class QueueFeeder {
   }
 
   suspend () {
+    this.state = 'suspend';
     this.consumer.commit();
-    console.log(`QueueFeeder: queue end reached, suspend`);
-    setTimeout(this.resume.bind(this), this.module.options.queueDelay);
+    console.log('QueueFeeder: queue end reached, suspend');
+    //setTimeout(this.resume.bind(this), this.module.options.queueDelay);
   }
 
   resume () {
-    console.log(`QueueFeeder: queue update received, resume`);
-    this.processQueue();
+    if (this.state !== 'process' && this.state !== 'exit') {
+      console.log('QueueFeeder: queue update received, resume');
+      this.processQueue();
+    }
   }
 
   async processQueue () {
     while (true) {
-      if (this.exitSignal) {
+      if (this.state === 'exit') {
         return this.exit();
       }
+
+      this.state = 'process';
 
       const el = this.consumer.pop();
 
