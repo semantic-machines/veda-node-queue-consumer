@@ -14,7 +14,7 @@ class QueueFeeder {
   }
 
   async run () {
-    log.warn(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' will start`);
+    log.info(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' will start`);
 
     try {
       await this.module.beforeStart();
@@ -46,7 +46,7 @@ class QueueFeeder {
 
     try {
       await this.module.beforeExit();
-      log.warn(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' has exited`);
+      log.info(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' has exited`);
     } catch (error) {
       log.error(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' failed to exit normally, ${error.stack}`);
     }
