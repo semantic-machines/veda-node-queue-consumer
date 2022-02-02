@@ -35,7 +35,7 @@ class QueueFeeder {
     process.on('SIGTERM', exitHandler);
 
     // Listen to queue update notifications
-    this.subscriber.connect(this.module.options.notifyChannel);
+    this.subscriber.connect(this.module.options.notifyChannelUrl);
     this.subscriber.on('data', () => this.resume());
 
     this.processQueue();
@@ -50,6 +50,9 @@ class QueueFeeder {
     } catch (error) {
       log.error(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' failed to exit normally, ${error.stack}`);
     }
+
+    // Close queue update notifications socket
+    this.subscriber.close();
 
     process.exit(1);
   }
