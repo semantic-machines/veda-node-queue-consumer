@@ -4,6 +4,6 @@
   "name": "test4",
   "queueDelay": 1000,
   "commitThreshold": 1000,
-  "notifyChannel": "tcp://127.0.0.1:8111",
+  "notifyChannelUrl": "tcp://127.0.0.1:8111",
   "mainModule": "tcp://127.0.0.1:8112"
 }
