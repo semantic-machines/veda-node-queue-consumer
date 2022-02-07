@@ -7,3 +7,4 @@ npm-debug.log*
 Cargo.lock
 package-lock.json
 *.geany
+.nyc_output

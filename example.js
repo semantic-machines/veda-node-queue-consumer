@@ -14,25 +14,28 @@ log.setLevel(OPTIONS.logLevel || 'warn');
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-let counter = 0;
+class MyModule extends QueueModule {
+  constructor (options) {
+    super(options);
+  }
 
-const myModule = new QueueModule({
-  options: OPTIONS,
+  counter = 0;
 
-  beforeStart: async function () {
+  async beforeStart () {
     await timeout(1000);
     log.warn(new Date().toISOString(), `${this.options.name}: started`);
-  },
+  }
 
-  beforeExit: async function () {
+  async beforeExit () {
     log.warn(new Date().toISOString(), `${this.options.name}: will exit`);
     await timeout(1000);
-  },
+  }
 
-  process: async function (el) {
-    counter++;
-    log.warn(new Date().toISOString(), `${this.options.name}:`, counter, el.op_id, el.cmd);
-  },
-});
+  async process (el) {
+    this.counter++;
+    log.warn(new Date().toISOString(), `${this.options.name}:`, this.counter, el.op_id, el.cmd);
+  }
+};
 
+const myModule = new MyModule(OPTIONS);
 myModule.run();

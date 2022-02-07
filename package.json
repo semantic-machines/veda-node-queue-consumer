@@ -9,7 +9,7 @@
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
     "test-rust": "cargo test",
-    "test": "node test"
+    "test": "nyc node test"
   },
   "author": "Roman Karpov, Valeriy Bushenev",
   "license": "ISC",
@@ -23,7 +23,8 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-security-node": "^1.1.0"
+    "eslint-plugin-security-node": "^1.1.0",
+    "nyc": "^15.1.0"
   },
   "dependencies": {
     "loglevel": "^1.8.0",

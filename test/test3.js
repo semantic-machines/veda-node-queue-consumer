@@ -1,33 +1,29 @@
-module.exports = (test, assert) => test('test3', () => {
-  const QueueConsumer = require('../QueueConsumer.js');
-  const myQueueConsumer = new QueueConsumer({
-    path: './test/queue',
-    queue: 'test',
-    name: 'test3',
-  });
+module.exports = (test, assert) => test('test4', async () => {
+  const {readFileSync} = require('fs');
+  const QueueModule = require('../QueueModule.js');
+  const log = require('loglevel');
 
-  const QUEUE_DELAY = 1000;
-  let MAX_CALLS = 3;
+  let OPTIONS;
+  try {
+    OPTIONS = JSON.parse(readFileSync('./test/options.json'));
+  } catch (error) {
+    OPTIONS = {
+      path: './test/queue',
+      queue: 'test',
+      name: 'test3',
+      queueDelay: 0,
+      commitThreshold: 1000,
+    };
+  }
 
-  let i = 0;
+  log.setLevel('error');
 
-  (function processQueue () {
-    if (!MAX_CALLS) {
-      return;
+  class MyModule extends QueueModule {
+    constructor (options) {
+      super(options);
     }
+  };
 
-    const el = myQueueConsumer.pop();
-
-    if (!el.cmd) {
-      myQueueConsumer.commit();
-      MAX_CALLS--;
-      return setTimeout(processQueue, QUEUE_DELAY);
-    }
-
-    i++;
-
-    return processQueue();
-  })();
-
-  assert.equal(i, 39);
+  const myModule = new MyModule(OPTIONS);
+  myModule.run();
 });

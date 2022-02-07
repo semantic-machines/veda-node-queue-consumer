@@ -6,7 +6,7 @@ module.exports = (test, assert) => test('test2', () => {
     name: 'test2',
   });
 
-  let i = 0;
+  let total = 0;
 
   while (true) {
     const el = myQueueConsumer.pop();
@@ -14,11 +14,11 @@ module.exports = (test, assert) => test('test2', () => {
       myQueueConsumer.commit();
       break;
     }
-    if (i % 10 === 0) {
+    if (total % 10 === 0) {
       myQueueConsumer.commit();
     }
-    i++;
+    total++;
   }
 
-  assert.equal(i, 39);
+  assert.equal(total, 39);
 });

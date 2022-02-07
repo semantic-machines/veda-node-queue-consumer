@@ -53,8 +53,9 @@ class QueueFeeder {
 
     // Close queue update notifications socket
     this.subscriber.close();
+    this.subscriber.shutdown();
 
-    process.exit(1);
+    process.exit(0);
   }
 
   suspend () {
