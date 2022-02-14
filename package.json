@@ -4,7 +4,7 @@
   "license": "ISC",
   "version": "1.0.0",
   "description": "Veda queue consumer for Node.js",
-  "main": "index.node",
+  "main": "index.js",
   "type": "module",
   "repository": {
     "type": "git",
