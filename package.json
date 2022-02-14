@@ -1,8 +1,12 @@
 {
   "name": "n-vqueue",
-  "version": "0.1.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Veda queue consumer for Node.js",
   "main": "index.node",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/semantic-machines/veda-node-queue-consumer.git"
+  },
   "scripts": {
     "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
     "build-debug": "npm run build --",
