@@ -1,12 +1,16 @@
-const test = require('baretest')('Veda node queue module');
-const assert = require('assert');
-const fs = require('fs');
+import assert from 'assert';
+import fs from 'fs';
+import baretest from 'baretest';
 
-require('./test1.js')(test, assert);
-require('./test2.js')(test, assert);
-require('./test3.js')(test, assert);
+import test1 from './test1.js'
+import test2 from './test2.js';
+import test3 from './test3.js';
 
-const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const test = baretest('Veda node queue module');
+
+test1(test, assert);
+test2(test, assert);
+test3(test, assert);
 
 test.before(function () {
   const path = './test/queue/';
@@ -15,6 +19,8 @@ test.before(function () {
     .filter((f) => regex.test(f))
     .map((f) => fs.unlinkSync(path + f));
 });
+
+const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test.after(async function () {
   await timeout(100);

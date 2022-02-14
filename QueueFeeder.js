@@ -1,7 +1,7 @@
-const log = require('loglevel');
-const nano = require('nanomsg');
-const process = require('process');
-const QueueConsumer = require('./QueueConsumer.js');
+import log from 'loglevel';
+import nano from 'nanomsg';
+import process from 'process';
+import QueueConsumer from './QueueConsumer.js';
 
 class QueueFeeder {
   constructor (module) {
@@ -104,4 +104,4 @@ class QueueFeeder {
   }
 }
 
-module.exports = QueueFeeder;
+export default QueueFeeder;

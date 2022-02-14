@@ -1,8 +1,8 @@
-module.exports = (test, assert) => test('test4', async () => {
-  const {readFileSync} = require('fs');
-  const QueueModule = require('../QueueModule.js');
-  const log = require('loglevel');
+import {readFileSync} from 'fs';
+import log from 'loglevel';
+import QueueModule from '../QueueModule.js';
 
+export default (test, assert) => test('test4', async () => {
   let OPTIONS;
   try {
     OPTIONS = JSON.parse(readFileSync('./test/options.json'));

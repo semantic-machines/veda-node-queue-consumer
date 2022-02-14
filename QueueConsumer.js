@@ -1,4 +1,6 @@
-'use strict';
+import {createRequire} from 'module';
+
+const require = createRequire(import.meta.url);
 
 const {
   consumerQueueOpenPart,
@@ -50,4 +52,4 @@ class QueueConsumer {
   }
 }
 
-module.exports = QueueConsumer;
+export default QueueConsumer;

@@ -1,6 +1,6 @@
-const {readFileSync} = require('fs');
-const QueueModule = require('./QueueModule.js');
-const log = require('loglevel');
+import {readFileSync} from 'fs';
+import QueueModule from './QueueModule.js';
+import log from 'loglevel';
 
 let OPTIONS;
 try {
