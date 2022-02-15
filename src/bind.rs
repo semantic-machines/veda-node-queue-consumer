@@ -201,7 +201,7 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
 
         let obj = cx.empty_object();
         let j_new_state = individual2obj(&mut cx, &mut new_state)?;
-        let j_prev_state = individual2obj(&mut cx, &mut new_state)?;
+        let j_prev_state = individual2obj(&mut cx, &mut prev_state)?;
 
         if let Some(cmd) = get_cmd(&mut queue_element) {
             if cmd == IndvOp::Put {
