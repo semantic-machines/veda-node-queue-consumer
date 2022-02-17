@@ -62,9 +62,9 @@ impl Consumer {
         self.queue_consumer.pop_body(msg)
     }
 
-    fn seek_next_pos(&mut self) -> bool {
-        self.queue_consumer.seek_next_pos()
-    }
+    //fn seek_next_pos(&mut self) -> bool {
+    //    self.queue_consumer.seek_next_pos()
+    //}
 
     fn commit(&mut self) -> bool {
         self.queue_consumer.commit()
@@ -200,8 +200,21 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
         new_state.parse_all();
 
         let obj = cx.empty_object();
-        let j_new_state = individual2obj(&mut cx, &mut new_state)?;
-        let j_prev_state = individual2obj(&mut cx, &mut prev_state)?;
+
+        if let Some(v) = queue_element.get_first_literal("uri") {
+            let jv = cx.string(v);
+            obj.set(&mut cx, "uri", jv)?;
+        }
+
+        if !prev_state.get_id().is_empty() {
+            let j_prev_state = individual2obj(&mut cx, &mut prev_state)?;
+            obj.set(&mut cx, "prev_state", j_prev_state)?;
+        }
+
+        if !new_state.get_id().is_empty() {
+            let j_new_state = individual2obj(&mut cx, &mut new_state)?;
+            obj.set(&mut cx, "new_state", j_new_state)?;
+        }
 
         if let Some(cmd) = get_cmd(&mut queue_element) {
             if cmd == IndvOp::Put {
@@ -212,9 +225,6 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
                 obj.set(&mut cx, "cmd", v)?;
             }
         }
-
-        obj.set(&mut cx, "prev_state", j_prev_state)?;
-        obj.set(&mut cx, "new_state", j_new_state)?;
 
         let v = cx.number(op_id as f64);
         obj.set(&mut cx, "op_id", v)?;
