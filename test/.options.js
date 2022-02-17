@@ -1,5 +1,5 @@
-{
-  "path": "./test/queue",
+export default {
+  "path": "./test/queue/",
   "queue": "test",
   "name": "test4",
   "queueDelay": 0,

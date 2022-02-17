@@ -97,7 +97,7 @@ class QueueFeeder {
           this.consumer.commit();
         }
       } catch (error) {
-        log.error(new Date().toISOString(), `QueueFeeder: ${this.module.options.name} failed to process queue element ${el}, ${error.stack}`);
+        log.error(new Date().toISOString(), `QueueFeeder: ${this.module.options.name} failed to process queue element ${JSON.stringify(el)}, ${error.stack}`);
         process.exit(1);
       }
     }

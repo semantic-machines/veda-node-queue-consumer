@@ -1,16 +1,8 @@
-import {readFileSync} from 'fs';
 import QueueModule from './QueueModule.js';
 import log from 'loglevel';
+import options from './.options.js';
 
-let OPTIONS;
-try {
-  OPTIONS = JSON.parse(readFileSync('./options.json'));
-} catch (error) {
-  console.error(new Date().toISOString(), 'Unable to read options.json');
-  process.exit(1);
-}
-
-log.setLevel(OPTIONS.logLevel || 'warn');
+log.setLevel(options.logLevel || 'warn');
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -37,5 +29,5 @@ class MyModule extends QueueModule {
   }
 };
 
-const myModule = new MyModule(OPTIONS);
+const myModule = new MyModule(options);
 myModule.run();

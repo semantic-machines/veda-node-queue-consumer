@@ -1,4 +1,4 @@
-{
+export default {
   "name": "Example",
   "path": "./queue",
   "queue": "individuals-flow",
