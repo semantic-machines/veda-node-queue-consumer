@@ -1,8 +1,8 @@
-const log = require('loglevel');
-const QueueModule = require('../QueueModule.js');
-const options = require('./.options.js');
+import log from 'loglevel';
+import QueueModule from '../QueueModule.js';
+import options from './.options.js';
 
-module.exports = (test, assert) => test('test4', async () => {
+export default (test, assert) => test('test4', async () => {
   log.setLevel('error');
 
   class MyModule extends QueueModule {

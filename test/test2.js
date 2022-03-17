@@ -1,6 +1,6 @@
-const QueueConsumer = require('../QueueConsumer.js');
+import QueueConsumer from '../QueueConsumer.js';
 
-module.exports = (test, assert) => test('test2', () => {
+export default (test, assert) => test('test2', () => {
   const myQueueConsumer = new QueueConsumer({
     path: './test/queue',
     queue: 'test',

@@ -1,3 +1,3 @@
-const QueueModule = require('./QueueModule.js');
+import QueueModule from './QueueModule.js';
 
-module.exports = QueueModule;
+export default QueueModule;

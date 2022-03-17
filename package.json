@@ -5,12 +5,14 @@
   "version": "1.0.0",
   "description": "Veda queue consumer for Node.js",
   "main": "index.js",
+  "type": "module",
+  "sourceType": "module",
   "repository": {
     "type": "git",
     "url": "git://github.com/semantic-machines/veda-node-queue-consumer.git"
   },
   "scripts": {
-    "build": "cargo-cp-artifact -nc build/Release/consumer.node -- cargo build --message-format=json-render-diagnostics",
+    "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
     "build-debug": "npm run build --",
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
@@ -29,7 +31,6 @@
   },
   "dependencies": {
     "baretest": "^2.0.0",
-    "bindings": "^1.5.0",
     "cargo-cp-artifact": "^0.1",
     "loglevel": "^1.8.0",
     "nanomsg": "^4.1.0"
