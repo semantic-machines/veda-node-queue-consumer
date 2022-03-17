@@ -12,7 +12,7 @@ const {
   consumerGetBatchSize,
   consumerPopElement,
   consumerCommit,
-} = require('./index.node');
+} = require('./build/Release/consumer.node');
 
 class QueueConsumer {
   constructor ({path, queue, name}) {
