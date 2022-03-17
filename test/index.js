@@ -1,10 +1,10 @@
-import assert from 'assert';
-import fs from 'fs';
-import baretest from 'baretest';
+const assert = require('assert');
+const fs = require('fs');
+const baretest = require('baretest');
 
-import test1 from './test1.js'
-import test2 from './test2.js';
-import test3 from './test3.js';
+const test1 = require('./test1.js');
+const test2 = require('./test2.js');
+const test3 = require('./test3.js');
 
 const test = baretest('Veda node queue module');
 

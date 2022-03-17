@@ -1,6 +1,6 @@
-import QueueModule from './QueueModule.js';
-import log from 'loglevel';
-import options from './.options.js';
+const QueueModule = require('./QueueModule.js');
+const log = require('loglevel');
+const options = require('./.options.js');
 
 log.setLevel(options.logLevel || 'warn');
 

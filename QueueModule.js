@@ -1,5 +1,5 @@
-import log from 'loglevel';
-import QueueFeeder from './QueueFeeder.js';
+const log = require('loglevel');
+const QueueFeeder = require('./QueueFeeder.js');
 
 class QueueModule {
   constructor (options) {
@@ -30,4 +30,4 @@ class QueueModule {
   }
 };
 
-export default QueueModule;
+module.exports = QueueModule;

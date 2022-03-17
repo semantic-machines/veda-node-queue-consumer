@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   "name": "Example",
   "path": "./queue",
   "queue": "individuals-flow",
@@ -11,4 +11,4 @@ export default {
   "roStorageUrl": "tcp://127.0.0.1:8115",
   "sqlQueryUrl": "tcp://127.0.0.1:8116",
   "logLevel": "warn"
-}
+};

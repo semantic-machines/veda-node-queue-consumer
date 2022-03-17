@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   "path": "./test/queue/",
   "queue": "test",
   "name": "test4",
@@ -7,4 +7,4 @@ export default {
   "notifyChannelUrl": "tcp://127.0.0.1:8111",
   "mainModule": "tcp://127.0.0.1:8112",
   "logLevel": "warn"
-}
+};
