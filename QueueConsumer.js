@@ -1,6 +1,8 @@
-import {createRequire} from 'module';
+// import {createRequire} from 'module';
 
-const require = createRequire(import.meta.url);
+// const require = createRequire(import.meta.url);
+
+import bindings from 'bindings';
 
 const {
   consumerQueueOpenPart,
@@ -12,7 +14,7 @@ const {
   consumerGetBatchSize,
   consumerPopElement,
   consumerCommit,
-} = require('./build/Release/consumer.node');
+} = bindings('consumer.node');
 
 class QueueConsumer {
   constructor ({path, queue, name}) {
