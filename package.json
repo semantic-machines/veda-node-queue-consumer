@@ -6,6 +6,7 @@
   "description": "Veda queue consumer for Node.js",
   "main": "index.js",
   "type": "module",
+  "sourceType": "module",
   "repository": {
     "type": "git",
     "url": "git://github.com/semantic-machines/veda-node-queue-consumer.git"
