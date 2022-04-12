@@ -2,8 +2,6 @@ import {createRequire} from 'module';
 
 const require = createRequire(import.meta.url);
 
-//import bindings from 'bindings';
-
 const {
   consumerQueueOpenPart,
   consumerNew,
@@ -14,7 +12,6 @@ const {
   consumerGetBatchSize,
   consumerPopElement,
   consumerCommit,
-//} = bindings('consumer.node');
 } = require('./consumer.node');
 
 class QueueConsumer {
