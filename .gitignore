@@ -1,10 +1,9 @@
 queue
 target
-index.node
+consumer.node
 **/node_modules
 **/.DS_Store
 npm-debug.log*
 Cargo.lock
 package-lock.json
 *.geany
-.nyc_output
