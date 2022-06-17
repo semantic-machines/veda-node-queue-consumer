@@ -19,6 +19,6 @@ v_queue = "=0.2.1"
 v_common = { package = "v-common", version = "0.1.97" }
 
 [dependencies.neon]
-version = "0.9"
+version = "0.10.1"
 default-features = false
 features = ["napi-6"]
