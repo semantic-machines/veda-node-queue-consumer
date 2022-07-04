@@ -13,7 +13,7 @@ class QueueModule {
     log.warn(new Date().toISOString(), `QueueModule: '${this.options.name}' has started`);
   }
 
-  async beforeExit () {
+  async beforeStop () {
     log.warn(new Date().toISOString(), `QueueModule: '${this.options.name}' will exit`);
   }
 
@@ -21,12 +21,12 @@ class QueueModule {
     log.warn(new Date().toISOString(), `QueueModule: queue element processed, cmd = ${el.cmd}, op_id = ${el.op_id}`);
   }
 
-  async run () {
-    return this.#queueFeeder.run();
+  async start () {
+    return this.#queueFeeder.start();
   }
 
-  async exit () {
-    return this.#queueFeeder.exit();
+  async stop () {
+    return this.#queueFeeder.stop();
   }
 };
 

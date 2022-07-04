@@ -13,7 +13,7 @@ class QueueFeeder {
     this.state = 'init';
   }
 
-  async run () {
+  async start () {
     log.info(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' will start`);
 
     try {
@@ -24,15 +24,15 @@ class QueueFeeder {
     }
 
     // Listen to OS signals
-    const exitHandler = (signal) => {
+    const stopHandler = (signal) => {
       log.warn(new Date().toISOString(), `QueueFeeder: signal ${signal} received`);
       if (this.state !== 'process') {
-        this.exit();
+        this.stop();
       }
-      this.state = 'exit';
+      this.state = 'stop';
     };
-    process.on('SIGINT', exitHandler);
-    process.on('SIGTERM', exitHandler);
+    process.on('SIGINT', stopHandler);
+    process.on('SIGTERM', stopHandler);
 
     // Listen to queue update notifications
     this.subscriber.connect(this.module.options.notifyChannelUrl);
@@ -41,14 +41,14 @@ class QueueFeeder {
     this.processQueue();
   }
 
-  async exit () {
+  async stop () {
     this.consumer.commit();
 
     try {
-      await this.module.beforeExit();
-      log.info(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' has exited`);
+      await this.module.beforeStop();
+      log.info(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' has stopped`);
     } catch (error) {
-      log.error(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' failed to exit normally, ${error.stack}`);
+      log.error(new Date().toISOString(), `QueueFeeder: '${this.module.options.name}' failed to stop normally, ${error.stack}`);
     }
 
     // Close queue update notifications socket
@@ -69,7 +69,7 @@ class QueueFeeder {
   }
 
   resume () {
-    if (this.state !== 'process' && this.state !== 'exit') {
+    if (this.state !== 'process' && this.state !== 'stop') {
       log.debug(new Date().toISOString(), 'QueueFeeder: queue update received, resume');
       this.processQueue();
     }
@@ -77,8 +77,8 @@ class QueueFeeder {
 
   async processQueue () {
     while (true) {
-      if (this.state === 'exit') {
-        return this.exit();
+      if (this.state === 'stop') {
+        return this.stop();
       }
 
       this.state = 'process';

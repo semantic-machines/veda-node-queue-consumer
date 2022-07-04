@@ -18,7 +18,7 @@ class MyModule extends QueueModule {
     log.warn(new Date().toISOString(), `${this.options.name}: started`);
   }
 
-  async beforeExit () {
+  async beforeStop () {
     log.warn(new Date().toISOString(), `${this.options.name}: will exit`);
     await timeout(1000);
   }

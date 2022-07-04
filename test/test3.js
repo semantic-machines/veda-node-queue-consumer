@@ -12,5 +12,5 @@ export default (test, assert) => test('test4', async () => {
   };
 
   const myModule = new MyModule(options);
-  myModule.run();
+  myModule.start();
 });
