@@ -36,7 +36,7 @@ class QueueFeeder {
 
     // Listen to queue update notifications
     this.subscriber.connect(this.module.options.notifyChannelUrl);
-    this.subscriber.on('data', () => this.resume());
+    this.subscriber.on('data', () => this.resume('signal'));
 
     this.processQueue();
   }
@@ -65,13 +65,16 @@ class QueueFeeder {
     if (this.timeout) {
       this.timeout = clearTimeout(this.timeout);
     }
-    this.timeout = setTimeout(this.resume.bind(this), this.module.options.queueDelay);
+    this.timeout = setTimeout(this.resume.bind(this), this.module.options.queueDelay, 'timer');
   }
 
-  resume () {
+  resume (source) {
+    log.debug(new Date().toISOString(), 'QueueFeeder: resume via', source);
     if (this.state !== 'process' && this.state !== 'stop') {
-      log.debug(new Date().toISOString(), 'QueueFeeder: queue update received, resume');
+      log.debug(new Date().toISOString(), 'QueueFeeder: resume queue processing, this.state =', this.state);
       this.processQueue();
+    } else {
+      log.debug(new Date().toISOString(), 'QueueFeeder: will not resume queue processing, this.state =', this.state);
     }
   }
 
