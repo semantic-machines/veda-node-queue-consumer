@@ -89,7 +89,6 @@ class QueueFeeder {
       const el = this.consumer.pop();
 
       if (!el.cmd) {
-        this.consumer.refreshQueue();
         const part = this.consumer.getPart();
         const rest = this.consumer.getRestSize();
         const maxPart = this.consumer.getMaxPart();
