@@ -89,7 +89,11 @@ class QueueFeeder {
       const el = this.consumer.pop();
 
       if (!el.cmd) {
-        log.debug(new Date().toISOString(), 'part =', this.consumer.getPart(), '| rest size =', this.consumer.getRestSize(), '| max part =', this.consumer.getMaxPart());
+        this.consumer.refreshQueue();
+        const part = this.consumer.getPart();
+        const rest = this.consumer.getRestSize();
+        const maxPart = this.consumer.getMaxPart();
+        log.debug(new Date().toISOString(), 'part =', part , '| rest size =', rest, '| max part =', maxPart);
         return this.suspend();
       }
 
