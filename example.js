@@ -15,19 +15,19 @@ class MyModule extends QueueModule {
 
   async beforeStart () {
     await timeout(1000);
-    log.warn(new Date().toISOString(), `${this.options.name}: started`);
+    log.debug(new Date().toISOString(), `${this.options.name}: started`);
   }
 
   async beforeStop () {
-    log.warn(new Date().toISOString(), `${this.options.name}: will exit`);
+    log.debug(Date().toISOString(), `${this.options.name}: will exit`);
     await timeout(1000);
   }
 
   async process (el) {
     this.counter++;
-    log.warn(new Date().toISOString(), `${this.options.name}:`, this.counter, el.op_id, el.cmd);
+    log.debug(new Date().toISOString(), `${this.options.name}:`, this.counter, el.op_id, el.cmd);
   }
 };
 
 const myModule = new MyModule(options);
-myModule.run();
+myModule.start();

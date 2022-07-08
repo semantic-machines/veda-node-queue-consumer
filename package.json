@@ -17,7 +17,7 @@
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
     "test-rust": "cargo test",
-    "test": "node test"
+    "test": "node test/small && node test/big"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
