@@ -66,7 +66,7 @@ pub fn individual2obj<'a>(cx: &mut FunctionContext<'a>, src: &mut Individual) ->
                     v8_value.set(cx, "type", t)?;
                 },
                 Value::Str(s, l) => {
-                    if *l != Lang::NONE {
+                    if *l != Lang::none() {
                         let l = cx.string(&l.to_string().to_uppercase());
                         v8_value.set(cx, "lang", l)?;
                     }

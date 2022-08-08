@@ -3,7 +3,7 @@ use neon::prelude::*;
 use std::cell::RefCell;
 use std::io;
 use std::io::{Error, ErrorKind};
-use v_common::module::module::{get_cmd, get_inner_binobj_as_individual};
+use v_common::module::module_impl::{get_cmd, get_inner_binobj_as_individual};
 use v_common::onto::individual::{Individual, RawObj};
 use v_common::onto::parser::parse_raw;
 use v_common::v_api::api_client::IndvOp;
@@ -171,18 +171,18 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
     let mut raw = RawObj::new(vec![0; (borrow_mut.get_message_length()) as usize]);
 
     if let Err(e) = borrow_mut.pop_body(&mut raw.data) {
-        match e {
+        return match e {
             ErrorQueue::FailReadTailMessage => {
-                return Ok(cx.empty_object());
+                Ok(cx.empty_object())
             },
             ErrorQueue::InvalidChecksum => {
                 //error!("[module] consumer:pop_body: invalid CRC, attempt seek next record");
                 borrow_mut.queue_consumer.seek_next_pos();
-                return Ok(cx.empty_object());
+                Ok(cx.empty_object())
             },
             _ => {
                 //error!("{} get msg from queue: {}", self.queue_prepared_count, e.as_str());
-                return Ok(cx.empty_object());
+                Ok(cx.empty_object())
             },
         }
     }

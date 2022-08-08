@@ -13,10 +13,11 @@ path = "src/lib.rs"
 
 [dependencies]
 rust_decimal = "1.7.0"
-v_queue = "=0.2.1"
+
+v_queue = "=0.2.4"
 #v_queue = { package = "v_queue", path = "../v-queue" }
 
-v_common = { package = "v-common", version = "0.1.97" }
+v_common = { package = "v-common", version = "0.4.23" }
 
 [dependencies.neon]
 version = "0.10.1"
