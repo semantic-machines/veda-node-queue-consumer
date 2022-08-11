@@ -14,17 +14,18 @@ class MyModule extends QueueModule {
   counter = 0;
 
   async beforeStart () {
-    await timeout(1000);
+    await timeout(1000); // Some async stuff
     log.debug(new Date().toISOString(), `${this.options.name}: started`);
   }
 
   async beforeStop () {
-    log.debug(Date().toISOString(), `${this.options.name}: will exit`);
-    await timeout(1000);
+    log.debug(new Date().toISOString(), `${this.options.name}: will exit`);
+    await timeout(1000); // Some async stuff
   }
 
   async process (el) {
     this.counter++;
+    await timeout(100); // Some async stuff
     log.debug(new Date().toISOString(), `${this.options.name}:`, this.counter, el.op_id, el.cmd);
   }
 };

@@ -1,8 +1,8 @@
 export default {
   "name": "Example",
-  "path": "./queue",
-  "queue": "individuals-flow",
-  "queueDelay": 60000,
+  "path": "./test/small/queue",
+  "queue": "test",
+  "queueDelay": 5000,
   "commitThreshold": 1000,
   "notifyChannelUrl": "tcp://127.0.0.1:8111",
   "mainModuleUrl": "tcp://127.0.0.1:8112",
@@ -10,5 +10,5 @@ export default {
   "ftQueryUrl": "tcp://127.0.0.1:8114",
   "roStorageUrl": "tcp://127.0.0.1:8115",
   "sqlQueryUrl": "tcp://127.0.0.1:8116",
-  "logLevel": "warn"
+  "logLevel": "debug"
 }
