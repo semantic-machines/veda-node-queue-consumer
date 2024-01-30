@@ -12,12 +12,12 @@ path = "src/lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rust_decimal = "1.7.0"
+rust_decimal = "1.32.0"
 
 v_queue = "=0.2.4"
 #v_queue = { package = "v_queue", path = "../v-queue" }
 
-v_common = { package = "v-common", version = "0.4.32" }
+v_common = { package = "v-common", version = "0.4.59" }
 
 [dependencies.neon]
 version = "0.10.1"

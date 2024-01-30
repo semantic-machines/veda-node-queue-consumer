@@ -165,6 +165,7 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
     let mut borrow_mut = consumer.borrow_mut();
 
     if !borrow_mut.pop_header() {
+        println!("[WARN] [module] consumer:pop_header return empty");
         return Ok(cx.empty_object());
     }
 
@@ -173,15 +174,16 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
     if let Err(e) = borrow_mut.pop_body(&mut raw.data) {
         return match e {
             ErrorQueue::FailReadTailMessage => {
+                println!("[WARN] [module] consumer:pop_body: Fail Read Tail Message");
                 Ok(cx.empty_object())
             },
             ErrorQueue::InvalidChecksum => {
-                //error!("[module] consumer:pop_body: invalid CRC, attempt seek next record");
+                println!("[WARN] [module] consumer:pop_body: invalid CRC, attempt seek next record");
                 borrow_mut.queue_consumer.seek_next_pos();
                 Ok(cx.empty_object())
             },
             _ => {
-                //error!("{} get msg from queue: {}", self.queue_prepared_count, e.as_str());
+                println!("[WARN] consumer:pop_body: {}", e.as_str());
                 Ok(cx.empty_object())
             },
         }
@@ -232,6 +234,7 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
         return Ok(obj);
     }
 
+    println!("[WARN] [module] consumer, fail parse queue element");
     return Ok(cx.empty_object());
 }
 
