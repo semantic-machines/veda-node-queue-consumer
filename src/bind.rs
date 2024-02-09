@@ -165,7 +165,14 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
     let mut borrow_mut = consumer.borrow_mut();
 
     if !borrow_mut.pop_header() {
-        println!("[WARN] [module] consumer:pop_header return empty");
+        println!("[WARN] [module] consumer:pop_element:pop_header return empty");
+
+        if borrow_mut.get_batch_size() > 0 {
+            println!("[WARN] [module] consumer:pop_element:get_batch_size={}", borrow_mut.get_batch_size());
+            borrow_mut.get_info_queue();
+            println!("[WARN] [module] consumer:pop_element:refresh info_queue");
+        }
+
         return Ok(cx.empty_object());
     }
 
