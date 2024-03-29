@@ -165,12 +165,12 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
     let mut borrow_mut = consumer.borrow_mut();
 
     if !borrow_mut.pop_header() {
-        println!("[WARN] [module] consumer:pop_element:pop_header return empty");
+        //("[WARN] [module] consumer:pop_element:pop_header return empty");
 
         if borrow_mut.get_batch_size() > 0 {
-            println!("[WARN] [module] consumer:pop_element:get_batch_size={}", borrow_mut.get_batch_size());
+            //println!("[WARN] [module] consumer:pop_element:get_batch_size={}", borrow_mut.get_batch_size());
             borrow_mut.get_info_queue();
-            println!("[WARN] [module] consumer:pop_element:refresh info_queue");
+            //println!("[WARN] [module] consumer:pop_element:refresh info_queue");
         }
 
         return Ok(cx.empty_object());
@@ -181,16 +181,16 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
     if let Err(e) = borrow_mut.pop_body(&mut raw.data) {
         return match e {
             ErrorQueue::FailReadTailMessage => {
-                println!("[WARN] [module] consumer:pop_body: Fail Read Tail Message");
+                //println!("[WARN] [module] consumer:pop_body: Fail Read Tail Message");
                 Ok(cx.empty_object())
             },
             ErrorQueue::InvalidChecksum => {
-                println!("[WARN] [module] consumer:pop_body: invalid CRC, attempt seek next record");
+                //println!("[WARN] [module] consumer:pop_body: invalid CRC, attempt seek next record");
                 borrow_mut.queue_consumer.seek_next_pos();
                 Ok(cx.empty_object())
             },
             _ => {
-                println!("[WARN] consumer:pop_body: {}", e.as_str());
+                //println!("[WARN] consumer:pop_body: {}", e.as_str());
                 Ok(cx.empty_object())
             },
         }
@@ -241,7 +241,7 @@ pub fn ref_pop_element(mut cx: FunctionContext) -> JsResult<JsObject> {
         return Ok(obj);
     }
 
-    println!("[WARN] [module] consumer, fail parse queue element");
+    //println!("[WARN] [module] consumer, fail parse queue element");
     return Ok(cx.empty_object());
 }
 
