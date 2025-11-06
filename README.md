@@ -1,6 +1,40 @@
 # veda-node-queue-consumer
 
-This project was bootstrapped by [create-neon](https://www.npmjs.com/package/create-neon).
+Node.js module for consuming messages from Veda file-based queues. Uses Rust (via Neon) for high-performance queue operations.
+
+## Documentation
+
+Complete documentation is available in the [doc](doc/) directory:
+
+- [Quick Start Guide](doc/QuickStart.md) ⚡ - Get started in 5 minutes
+- [Overview](doc/Overview.md) - Introduction and key features
+- [Installation Guide](doc/Installation.md) - Setup and installation
+- [Configuration Guide](doc/Configuration.md) - Configuration options
+- [API Reference](doc/API.md) - Complete API documentation
+- [Architecture](doc/Architecture.md) - Technical architecture
+- [Usage Examples](doc/Examples.md) - Code examples
+- [FAQ](doc/FAQ.md) - Frequently asked questions
+
+## Quick Start
+
+```javascript
+import QueueModule from 'veda-node-queue-consumer';
+
+class MyModule extends QueueModule {
+  async process(el) {
+    console.log('Processing:', el.cmd, el.uri);
+  }
+}
+
+const module = new MyModule({
+  name: 'my-consumer',
+  path: './queue',
+  queue: 'individuals-flow',
+  notifyChannelUrl: 'tcp://127.0.0.1:9323'
+});
+
+module.start();
+```
 
 ## Installing
 
@@ -26,13 +60,12 @@ This command uses the [cargo-cp-artifact](https://github.com/neon-bindings/cargo
 
 ## Exploring
 
-After building, you can explore its exports at the Node REPL:
+After building, you can explore the module:
 
 ```sh
 $ npm install
 $ node
-> require('.').hello()
-"hello node"
+> import('./index.js').then(m => console.log(m.default))
 ```
 
 ## Available Scripts
@@ -43,27 +76,31 @@ In the project directory, you can run:
 
 Installs the project, including running `npm run build`.
 
-### `npm build`
+### `npm run build`
 
 Builds the Node addon (`index.node`) from source.
 
-Additional [`cargo build`](https://doc.rust-lang.org/cargo/commands/cargo-build.html) arguments may be passed to `npm build` and `npm build-*` commands. For example, to enable a [cargo feature](https://doc.rust-lang.org/cargo/reference/features.html):
+Additional [`cargo build`](https://doc.rust-lang.org/cargo/commands/cargo-build.html) arguments may be passed to `npm run build` and build commands. For example, to enable a [cargo feature](https://doc.rust-lang.org/cargo/reference/features.html):
 
 ```
 npm run build -- --feature=beetle
 ```
 
-#### `npm build-debug`
+#### `npm run build-debug`
 
-Alias for `npm build`.
+Alias for `npm run build`.
 
-#### `npm build-release`
+#### `npm run build-release`
 
-Same as [`npm build`](#npm-build) but, builds the module with the [`release`](https://doc.rust-lang.org/cargo/reference/profiles.html#release) profile. Release builds will compile slower, but run faster.
+Same as `npm run build` but, builds the module with the [`release`](https://doc.rust-lang.org/cargo/reference/profiles.html#release) profile. Release builds will compile slower, but run faster.
 
 ### `npm test`
 
-Runs the unit tests by calling `cargo test`. You can learn more about [adding tests to your Rust code](https://doc.rust-lang.org/book/ch11-01-writing-tests.html) from the [Rust book](https://doc.rust-lang.org/book/).
+Runs the JavaScript test suites for queue consumer functionality.
+
+### `npm run test-rust`
+
+Runs Rust unit tests by calling `cargo test`. You can learn more about [adding tests to your Rust code](https://doc.rust-lang.org/book/ch11-01-writing-tests.html) from the [Rust book](https://doc.rust-lang.org/book/).
 
 ## Project Layout
 
