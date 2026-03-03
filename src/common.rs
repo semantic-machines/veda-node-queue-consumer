@@ -2,9 +2,9 @@ use neon::prelude::*;
 use neon::types::JsDate;
 use rust_decimal::prelude::ToPrimitive;
 use rust_decimal::Decimal;
-use v_common::onto::datatype::Lang;
-use v_common::onto::individual::Individual;
-use v_common::onto::resource::Value;
+use v_individual_model::onto::datatype::Lang;
+use v_individual_model::onto::individual::Individual;
+use v_individual_model::onto::resource::Value;
 
 pub fn individual2obj<'a>(cx: &mut FunctionContext<'a>, src: &mut Individual) -> JsResult<'a, JsObject> {
     let v8_obj = cx.empty_object();

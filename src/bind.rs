@@ -4,8 +4,8 @@ use std::cell::RefCell;
 use std::io;
 use std::io::{Error, ErrorKind};
 use v_common::module::module_impl::{get_cmd, get_inner_binobj_as_individual};
-use v_common::onto::individual::{Individual, RawObj};
-use v_common::onto::parser::parse_raw;
+use v_individual_model::onto::individual::{Individual, RawObj};
+use v_individual_model::onto::parser::parse_raw;
 use v_common::v_api::api_client::IndvOp;
 use v_queue::record::{ErrorQueue, Mode};
 
