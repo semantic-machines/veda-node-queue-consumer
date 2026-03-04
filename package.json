@@ -12,7 +12,7 @@
     "url": "git://github.com/semantic-machines/veda-node-queue-consumer.git"
   },
   "scripts": {
-    "build": "cargo-cp-artifact -ac veda_node_queue_consumer consumer.node -- cargo build --message-format=json-render-diagnostics",
+    "build": "RUSTFLAGS='-L /usr/local/lib' cargo-cp-artifact -ac veda_node_queue_consumer consumer.node -- cargo build --message-format=json-render-diagnostics",
     "build-debug": "npm run build --",
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
