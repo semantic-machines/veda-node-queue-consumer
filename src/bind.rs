@@ -51,7 +51,7 @@ impl Consumer {
     }
 
     fn get_message_length(&self) -> u32 {
-        self.queue_consumer.header.msg_length
+        self.queue_consumer.record_len() as u32
     }
 
     fn pop_header(&mut self) -> bool {

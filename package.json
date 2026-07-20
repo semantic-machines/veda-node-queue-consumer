@@ -2,7 +2,7 @@
   "name": "veda-node-queue-consumer",
   "author": "Roman Karpov, Valeriy Bushenev",
   "license": "ISC",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Veda queue consumer for Node.js",
   "main": "index.js",
   "type": "module",
@@ -12,7 +12,7 @@
     "url": "git://github.com/semantic-machines/veda-node-queue-consumer.git"
   },
   "scripts": {
-    "build": "RUSTFLAGS='-L /usr/local/lib' cargo-cp-artifact -ac veda_node_queue_consumer consumer.node -- cargo build --message-format=json-render-diagnostics",
+    "build": "RUSTFLAGS='-L native=./lib64/libxapianm/.libs -C link-arg=-Wl,-rpath,$ORIGIN/lib64/libxapianm/.libs' cargo-cp-artifact -ac veda_node_queue_consumer consumer.node -- cargo build --message-format=json-render-diagnostics",
     "build-debug": "npm run build --",
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",

@@ -1,6 +1,6 @@
 [package]
 name = "veda-node-queue-consumer"
-version = "0.1.1"
+version = "0.1.2"
 license = "ISC"
 edition = "2018"
 exclude = ["index.node"]
@@ -12,12 +12,12 @@ path = "src/lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rust_decimal = "1.32.0"
+rust_decimal = "=1.36"
 
-v_queue = "=0.2.7"
+v_queue = "=0.3.3"
 #v_queue = { package = "v_queue", path = "../v-queue" }
 
-v_common = { package = "v-common", version = "0.20.0" }
+v_common = { package = "v-common", version = "0.25.5" }
 v_individual_model = { package = "v-individual-model", version = "0.2.6" }
 
 [dependencies.neon]
